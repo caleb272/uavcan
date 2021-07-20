@@ -239,7 +239,7 @@ class CanDriver : public uavcan::ICanDriver, uavcan::Noncopyable
     CanIface if1_;
 #endif
     bool initialized_by_me_[UAVCAN_STM32_NUM_IFACES];
-    uavcan::uint8_t num_ifaces_;
+    uavcan::uint8_t num_ifaces_ = UAVCAN_STM32_NUM_IFACES;
     uavcan::uint8_t if_int_to_gl_index_[UAVCAN_STM32_NUM_IFACES];
 
 
