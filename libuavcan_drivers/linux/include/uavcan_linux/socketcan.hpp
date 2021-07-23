@@ -18,6 +18,7 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+//#undef __glibc_c99_flexarr_available
 #include <linux/can.h>
 #include <linux/can/raw.h>
 #include <poll.h>
@@ -219,11 +220,20 @@ class SocketCanIface : public uavcan::ICanIface
         iov.iov_base = &sockcan_frame;
         iov.iov_len  = sizeof(sockcan_frame);
 
-        struct Control
-        {
-            cmsghdr cm;
-            std::uint8_t data[sizeof(::timeval)];
-        };
+        //struct Control
+        //{
+        //    cmsghdr cm;
+        //    std::uint8_t data[sizeof(::timeval)];
+        //};
+	
+	union Control {
+    struct {
+        std::uint8_t _detail_hdr_skip[sizeof(struct cmsghdr)];
+        std::uint8_t data[sizeof(::timeval)];
+    };
+    struct cmsghdr hdr;
+};
+
         auto control = Control();
 
         auto msg = ::msghdr();
